@@ -13,9 +13,11 @@ export const AuthProvider = ({ children, ...props }: Props) => {
   const [auth, setAuth] = useState(false);
 
   useEffect(() => {
-    auth && localStorage.setItem("token", "sampleToken");
+    auth
+      ? localStorage.setItem("token", "sampleToken")
+      : localStorage.removeItem("token");
   }, [auth]);
-  
+
   useEffect(() => {
     localStorage.getItem("token") && setAuth(true);
   }, []);

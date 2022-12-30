@@ -11,6 +11,10 @@ export function LogIn() {
     username: "adminuser",
     password: "AdminPassword123!",
   };
+  const sampleUserCredentials = {
+    username: "username",
+    password: "UserPassword123!",
+  };
 
   const { setAuth } = useAuth();
 
@@ -30,14 +34,16 @@ export function LogIn() {
     }),
     onSubmit: async function (values, { resetForm }) {
       if (
-        values.input === sampleAdminCredentials.username &&
-        values.password === sampleAdminCredentials.password
+        (values.input === sampleAdminCredentials.username &&
+          values.password === sampleAdminCredentials.password) ||
+        (values.input === sampleUserCredentials.username &&
+          values.password === sampleUserCredentials.password)
       ) {
         setAuth(true);
 
         Swal.fire({
           icon: "success",
-          title: "Successful Logged In!",
+          title: "Successfully Logged In!",
         });
         resetForm({});
       } else {
