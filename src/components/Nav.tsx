@@ -1,5 +1,6 @@
 import { Container, Nav, Button, Navbar as NavbarBs } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
+import axios from "../api/axios";
 import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
 
@@ -14,6 +15,15 @@ export function Navbar() {
       title: "Successfully Logged Out!",
     });
     setTimeout(() => navigate("/"), 1000);
+  }
+
+  async function handleFetch() {
+    const response = await axios.get("/");
+    const stringify = JSON.stringify(response.data);
+    Swal.fire({
+      icon: "success",
+      title: `SUCCESSFULLY FETCH \nDATA: ${stringify}`,
+    });
   }
 
   return (
@@ -39,6 +49,9 @@ export function Navbar() {
               Log Out
             </Button>
           )}
+          <Button variant="success" onClick={handleFetch}>
+            Fetch Data
+          </Button>
         </Nav>
       </Container>
     </NavbarBs>
