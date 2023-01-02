@@ -1,10 +1,11 @@
 import { Suspense, lazy } from "react";
 import { Navbar } from "./components/Nav";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import useAuth from "./hooks/useAuth";
 import PublicRoute from "./components/PublicRoute";
 import Signup from "./pages/Signup";
+import Missing from "./pages/Missing";
 
 const Home = lazy(() => import("./pages/Home"));
 const Team = lazy(() => import("./pages/Team"));
@@ -44,6 +45,7 @@ function App() {
               <Route path="/signup" element={<Signup />} />
             </Route>
             <Route path="/team" element={<Team />} />
+            <Route path="*" element={<Missing />} />
           </Routes>
         </Container>
       </Suspense>

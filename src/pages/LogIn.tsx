@@ -32,6 +32,7 @@ export function LogIn() {
 
       if (res.data.response === true) {
         setAuth(res.data.accessToken);
+
         localStorage.setItem("accessToken", res.data.accessToken);
         Swal.fire({
           icon: "success",

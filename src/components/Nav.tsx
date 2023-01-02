@@ -8,7 +8,7 @@ export function Navbar() {
   const navigate = useNavigate();
 
   function handleLogOut() {
-    setAuth("null");
+    setAuth(undefined);
     setAdmin(false);
     localStorage.removeItem("accessToken");
     Swal.fire({
@@ -28,7 +28,7 @@ export function Navbar() {
           <Nav.Link to="/" as={NavLink}>
             {admin ? "Admin" : "Home"}
           </Nav.Link>
-          {auth === "null" && (
+          {!auth && (
             <Nav.Link to="/login" as={NavLink}>
               Log In
             </Nav.Link>
@@ -36,7 +36,7 @@ export function Navbar() {
           <Nav.Link to="/team" as={NavLink}>
             Team Members
           </Nav.Link>
-          {auth !== "null" && (
+          {auth && (
             <Button variant="secondary" onClick={handleLogOut}>
               Log Out
             </Button>
