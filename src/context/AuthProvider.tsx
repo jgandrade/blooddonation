@@ -1,7 +1,6 @@
 import { ReactNode, useEffect } from "react";
 import { createContext, useState } from "react";
 import axios from "../api/axios";
-import { couldStartTrivia } from "typescript";
 
 let authProps: any = {};
 

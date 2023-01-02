@@ -1,6 +1,5 @@
 import { Container, Nav, Button, Navbar as NavbarBs } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import axios from "../api/axios";
 import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
 

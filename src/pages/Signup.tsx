@@ -1,7 +1,6 @@
 import { Button, Form } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Swal from "sweetalert2";
 
 function Signup() {
   const formik = useFormik({
