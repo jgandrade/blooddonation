@@ -1,5 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import { createContext, useState } from "react";
+import axios from "../api/axios";
+import { couldStartTrivia } from "typescript";
 
 let authProps: any = {};
 
@@ -10,20 +12,33 @@ interface Props {
 }
 
 export const AuthProvider = ({ children, ...props }: Props) => {
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState("");
+  const [admin, setAdmin] = useState(false);
+  const [loadingCredentials, setLoadingCredentials] = useState(true);
 
   useEffect(() => {
-    auth
-      ? localStorage.setItem("token", "sampleToken")
-      : localStorage.removeItem("token");
+    setLoadingCredentials(true);
+    if (JSON.stringify(localStorage.getItem("accessToken")) === null)
+      setAuth("");
+    else setAuth(JSON.stringify(localStorage.getItem("accessToken")));
+
+    const config = {
+      headers: { Authorization: `Bearer ${auth.slice(1, auth.length - 1)}` },
+    };
+
+    axios
+      .get("/user/verify", config)
+      .then((res) => {
+        if (res.data.response) setAdmin(true);
+      })
+      .catch((err) => console.log(err));
+    setLoadingCredentials(false);
   }, [auth]);
 
-  useEffect(() => {
-    localStorage.getItem("token") && setAuth(true);
-  }, []);
-
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider
+      value={{ auth, setAuth, admin, setAdmin, loadingCredentials }}
+    >
       {children}
     </AuthContext.Provider>
   );

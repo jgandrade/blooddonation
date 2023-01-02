@@ -11,9 +11,9 @@ const Team = lazy(() => import("./pages/Team"));
 const LogIn = lazy(() => import("./pages/LogIn"));
 
 function App() {
-  const { auth } = useAuth();
+  const { loadingCredentials } = useAuth();
 
-  const loader = (
+  const Loader = () => (
     <>
       <div
         className="position-relative d-flex justify-content-center align-items-center bg-light"
@@ -28,10 +28,14 @@ function App() {
     </>
   );
 
+  if (loadingCredentials) {
+    return <Loader />;
+  }
+
   return (
     <div className="app">
       <Navbar />
-      <Suspense fallback={loader}>
+      <Suspense fallback={<Loader />}>
         <Container>
           <Routes>
             <Route path="/" element={<Home />} />

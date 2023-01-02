@@ -5,25 +5,18 @@ import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
 
 export function Navbar() {
-  const { auth, setAuth } = useAuth();
+  const { auth, setAuth, admin, setAdmin } = useAuth();
   const navigate = useNavigate();
 
   function handleLogOut() {
-    setAuth(false);
+    setAuth("null");
+    setAdmin(false);
+    localStorage.removeItem("accessToken");
     Swal.fire({
       icon: "success",
       title: "Successfully Logged Out!",
     });
     setTimeout(() => navigate("/"), 1000);
-  }
-
-  async function handleFetch() {
-    const response = await axios.get("/");
-    const stringify = JSON.stringify(response.data);
-    Swal.fire({
-      icon: "success",
-      title: `SUCCESSFULLY FETCH \nDATA: ${stringify}`,
-    });
   }
 
   return (
@@ -34,9 +27,9 @@ export function Navbar() {
             Life<span className="text-danger">Quest</span>
           </h3>
           <Nav.Link to="/" as={NavLink}>
-            Home
+            {admin ? "Admin" : "Home"}
           </Nav.Link>
-          {!auth && (
+          {auth === "null" && (
             <Nav.Link to="/login" as={NavLink}>
               Log In
             </Nav.Link>
@@ -44,14 +37,11 @@ export function Navbar() {
           <Nav.Link to="/team" as={NavLink}>
             Team Members
           </Nav.Link>
-          {auth && (
+          {auth !== "null" && (
             <Button variant="secondary" onClick={handleLogOut}>
               Log Out
             </Button>
           )}
-          <Button variant="success" onClick={handleFetch}>
-            Fetch Data
-          </Button>
         </Nav>
       </Container>
     </NavbarBs>
