@@ -11,9 +11,12 @@ function Signup() {
       username: "",
       address: "",
       age: "",
-      bloodtype: "",
-      mobile: "",
+      bloodType: "",
+      contact_number: "",
       password: "",
+      gender: "",
+      weight: "",
+      height: "",
     },
     validationSchema: Yup.object({
       fullname: Yup.string()
@@ -37,17 +40,25 @@ function Signup() {
         .min(18, "You must be 18 and above")
         .required("Required")
         .strict(true),
-      bloodtype: Yup.string().required("Required").strict(true),
-      mobile: Yup.string().required("Required").strict(true),
+      bloodType: Yup.string().required("Required").strict(true),
+      contact_number: Yup.string().required("Required").strict(true),
       password: Yup.string().required("Required").strict(true),
+      gender: Yup.string().required("Required").strict(true),
+      weight: Yup.number().required("Required").strict(true),
+      height: Yup.number().required("Required").strict(true),
     }),
     onSubmit: async function (values, { resetForm }) {
-      let res = await axios.post("/user/register", values);
+      const genderValue = values.gender === "0" ? 0 : 1;
+      let res = await axios.post("/user/register", {
+        ...values,
+        gender: genderValue,
+      });
       if (res.data.response) {
         Swal.fire({
           icon: "success",
           title: "Successfully Registered",
         });
+        resetForm({});
       } else {
         Swal.fire({
           icon: "error",
@@ -55,11 +66,9 @@ function Signup() {
           text: "Looks like there is a duplicate username/fullname found in the database. Try again!",
         });
       }
-      resetForm({});
     },
   });
 
-  console.log(formik.values);
   return (
     <div className="mt-5 mb-5 container-fluid col-8">
       <Form onSubmit={formik.handleSubmit}>
@@ -71,7 +80,7 @@ function Signup() {
             value={formik.values.username}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            placeholder="Please enter your fullname"
+            placeholder="Please enter your username"
           />
           {formik.touched.username && formik.errors.username ? (
             <p className="text-danger" style={{ fontSize: "0.8em" }}>
@@ -117,6 +126,42 @@ function Signup() {
             <></>
           )}
         </Form.Group>
+        <Form.Group className="mb-3" controlId="formWeight">
+          <Form.Label>Weight</Form.Label>
+          <Form.Control
+            name="weight"
+            type="number"
+            value={formik.values.weight}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            placeholder="Please enter your weight in kilograms"
+          />
+          {formik.touched.weight && formik.errors.weight ? (
+            <p className="text-danger" style={{ fontSize: "0.8em" }}>
+              {formik.errors.weight}
+            </p>
+          ) : (
+            <></>
+          )}
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formHeight">
+          <Form.Label>Height</Form.Label>
+          <Form.Control
+            name="height"
+            type="number"
+            value={formik.values.height}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            placeholder="Please enter your height in cm"
+          />
+          {formik.touched.height && formik.errors.height ? (
+            <p className="text-danger" style={{ fontSize: "0.8em" }}>
+              {formik.errors.height}
+            </p>
+          ) : (
+            <></>
+          )}
+        </Form.Group>
         <Form.Group className="mb-3" controlId="formAddress">
           <Form.Label>Address</Form.Label>
           <Form.Control
@@ -138,8 +183,8 @@ function Signup() {
         <Form.Group className="mb-3" controlId="formBloodTypes">
           <Form.Label>Blood Types</Form.Label>
           <Form.Select
-            name="bloodtype"
-            value={formik.values.bloodtype}
+            name="bloodType"
+            value={formik.values.bloodType}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           >
@@ -153,9 +198,29 @@ function Signup() {
             <option value="O-">O-</option>
             <option value="O+">O+</option>
           </Form.Select>
-          {formik.touched.bloodtype && formik.errors.bloodtype ? (
+          {formik.touched.bloodType && formik.errors.bloodType ? (
             <p className="text-danger" style={{ fontSize: "0.8em" }}>
-              {formik.errors.bloodtype}
+              {formik.errors.bloodType}
+            </p>
+          ) : (
+            <></>
+          )}
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formGender">
+          <Form.Label>Gender</Form.Label>
+          <Form.Select
+            name="gender"
+            value={formik.values.gender}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option> Select Gender</option>
+            <option value="0">Male</option>
+            <option value="1">Female</option>
+          </Form.Select>
+          {formik.touched.gender && formik.errors.gender ? (
+            <p className="text-danger" style={{ fontSize: "0.8em" }}>
+              {formik.errors.gender}
             </p>
           ) : (
             <></>
@@ -164,16 +229,16 @@ function Signup() {
         <Form.Group className="mb-3" controlId="formMobileNumber">
           <Form.Label>Mobile Number</Form.Label>
           <Form.Control
-            name="mobile"
+            name="contact_number"
             type="text"
-            value={formik.values.mobile}
+            value={formik.values.contact_number}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            placeholder="Please enter your mobile number"
+            placeholder="Please enter your contact number"
           />
-          {formik.touched.mobile && formik.errors.mobile ? (
+          {formik.touched.contact_number && formik.errors.contact_number ? (
             <p className="text-danger" style={{ fontSize: "0.8em" }}>
-              {formik.errors.mobile}
+              {formik.errors.contact_number}
             </p>
           ) : (
             <></>
